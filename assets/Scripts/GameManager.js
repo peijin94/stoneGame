@@ -32,6 +32,7 @@ cc.Class({
         scrollView:cc.ScrollView,
         but:cc.Prefab,
         board:cc.Prefab,
+        imageFrame:cc.Prefab,
         storyName:'intercept',
         playerName:'喵喵',
         story:undefined,
@@ -90,6 +91,14 @@ cc.Class({
         if (!this.myStory.canContinue && this.myStory.currentChoices.length === 0) this.end();
         //this.board.string='';
         while(this.myStory.canContinue){
+            var tags = this.myStory.currentTags;
+            for(let i=0; i<tags.length; i++) {
+                var tag = tags[i];
+                var splitTag = this.splitPropertyTag(tag);
+                if( splitTag && splitTag.property == "IMAGE" ) {
+                    this.addImage(splitTag.val);
+                }
+            }
             this.addLine(this.myStory.Continue());
         }
         if(this.myStory.currentChoices.length > 0){
@@ -120,8 +129,30 @@ cc.Class({
         return button;
     },
 
+    addImage:function(url){
+        let that=this;
+        let image=cc.instantiate(this.imageFrame);
+        cc.loader.load(url,function(err,texture) {
+            image.getComponent(cc.Sprite).spriteFrame=new cc.SpriteFrame(texture);
+            image.parent=that.out;
+        });
+    },
+
     // addInput:function(defaultText,placehoder){
     //     let newInput=cc.instantiate()
     // }
+
+    splitPropertyTag:function(tag) {
+        var propertySplitIdx = tag.indexOf(":");
+        if( propertySplitIdx != null ) {
+            var property = tag.substr(0, propertySplitIdx).trim();
+            var val = tag.substr(propertySplitIdx+1).trim(); 
+            return {
+                property: property,
+                val: val
+            };
+        }
+        return null;
+    }
 
 });

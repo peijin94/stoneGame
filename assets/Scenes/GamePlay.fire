@@ -1030,6 +1030,9 @@
     "board": {
       "__uuid__": "7ddcd393-8eca-4325-8b6f-f5f95b35870d"
     },
+    "imageFrame": {
+      "__uuid__": "5d4a0484-599e-4feb-ba2c-35a741be7dd3"
+    },
     "storyName": "intercept",
     "playerName": "喵喵",
     "_id": "0e4JXcmndOiIvLCpz8WPBy"
