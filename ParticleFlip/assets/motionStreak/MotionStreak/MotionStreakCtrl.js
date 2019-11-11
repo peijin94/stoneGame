@@ -34,8 +34,8 @@ cc.Class({
         this.oldTexture = this.motionStreak.texture;
 
         
-        this.xSpeed = -400;
-        this.ySpeed = 300;
+        this.xSpeed = 300;
+        this.ySpeed = -400;
         this.tSpeed = 500;
         this.dtheta=0.05;
         this.target_x = 100;
@@ -44,18 +44,26 @@ cc.Class({
         this.target_width_y = 25;
         this.Timeall = 0
         
-
-        this.accLeft = false;
-        this.accRight = false;
-
         
         this.running = false;
 
         this.drawing = this.trace.getComponent(cc.Graphics);
         this.drawing.lineWidth = 6;
         this.drawing.moveTo(-350, 0);
+
+        this.gold.x = -350
+        this.gold.y = 0
         this.runcount=0;
+
     },
+
+    restart: function(){
+        this.drawing.clear()
+        this.score.string="L:0"
+        this.onLoad()
+        this.running = true;
+    },
+
 
     onClick: function () {
         
@@ -139,7 +147,7 @@ cc.Class({
             this.drawing.stroke()    
         }
         
-        //console.log(this.score);
+        console.log("running");
 
         this.Timeall = this.Timeall +dt0
 
