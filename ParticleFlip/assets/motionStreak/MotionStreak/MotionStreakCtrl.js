@@ -54,7 +54,7 @@ cc.Class({
         this.drawing = this.trace.getComponent(cc.Graphics);
         this.drawing.lineWidth = 6;
         this.drawing.moveTo(-350, 0);
-
+        this.runcount=0;
     },
 
     onClick: function () {
@@ -128,9 +128,16 @@ cc.Class({
         this.xSpeed = xtmp
         this.ySpeed = ytmp
 
-        this.drawing.lineTo(this.gold.x, this.gold.y);
-        this.drawing.strokeColor = cc.Color.RED;
-        this.drawing.stroke();
+
+        // draw something
+        //this.drawing.lineTo(this.gold.x, this.gold.y);
+        //this.drawing.strokeColor = cc.Color.RED;
+        //this.drawing.stroke();
+        if (this.runcount %10 ==0){
+            this.drawing.circle (this.gold.x, this.gold.y, 0.1);
+            this.drawing.strokeColor = cc.Color.WHITE;
+            this.drawing.stroke()    
+        }
         
         //console.log(this.score);
 
