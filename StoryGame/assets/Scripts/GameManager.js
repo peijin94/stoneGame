@@ -37,6 +37,7 @@ cc.Class({
         playerName:'喵喵',
         story:undefined,
         myStory:undefined,
+        started:false
     },
     // LIFE-CYCLE CALLBACKS:
 
@@ -52,29 +53,30 @@ cc.Class({
         this.out.destroyAllChildren();
         let that=this;   
         //本地资源加载json的解决方案   
-        cc.loader.loadRes(storyname,cc.JsonAsset,function (err,JS){
-            if (err) {
-                cc.log(err.message || err);
-                return;
-            }
-            that.myStory=new that.story(JS.json);
-            that.myStory.variablesState.$("player_name",playername);
-            cc.log('success');
-            that.continueToNextChoice();
-        });
-        //网络加载json的解决方案
-        // var xhr = cc.loader.getXMLHttpRequest();
-        // xhr.open("GET", "http://your-json-url", true);
-        // xhr.onerror=()=>this.board.string+='请检查你的网络连接';
-        // xhr.onreadystatechange = function () {
-        //     if (xhr.readyState === 4 && (xhr.status >= 200 && xhr.status < 300)) {
-        //         that.myStory=new that.story(xhr.responseText.json);
-        //         that.myStory.variablesState.$("player_name",playername);
+        // cc.loader.loadRes(storyname,cc.JsonAsset,function (err,JS){
+        //     if (err) {
+        //         cc.log(err.message || err);
+        //         return;
+        //     }
+        //     that.myStory=new that.story(JS.json);
+        //     if(that.myStory.variablesState.$("player_name")!=null)that.myStory.variablesState.$("player_name",playername);
         //     cc.log('success');
         //     that.continueToNextChoice();
-        //     }
-        // };
-        // xhr.send();       
+        // });
+        //网络加载json的解决方案
+        var xhr =new XMLHttpRequest();
+        xhr.open("GET", 'http://116.62.192.221/'+storyname+'.json', true);
+        xhr.onerror=()=>this.board.string='请检查你的网络连接';
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && (xhr.status >= 200 && xhr.status < 400)) {
+                let responseJson=JSON.parse(xhr.responseText);
+                that.myStory=new that.story(responseJson);
+                if(that.myStory.variablesState.$("player_name")!=null)that.myStory.variablesState.$("player_name",playername);
+                cc.log('success');
+                that.continueToNextChoice();
+            }
+        };
+        xhr.send();       
     },
 
     // update (dt) {},
@@ -86,29 +88,51 @@ cc.Class({
         });
         var backButton=this.addButton('返回菜单？');
     },
+
+    continueStory:function(cycle){
+        if(!this.started)this.started=true;
+        var tags = this.myStory.currentTags;
+        for(let i=0; i<tags.length; i++) {
+            var tag = tags[i];
+            var splitTag = this.splitPropertyTag(tag);
+            if( splitTag && splitTag.property == "IMAGE" ) {
+                this.addImage(splitTag.val);
+            }
+            if(splitTag&&splitTag.property=="IMAGE64"){
+                this.addImage64(splitTag.val);
+            }
+        }
+        this.addLine(this.myStory.Continue());
+        if(!cycle)this.continueToNextChoice();
+    },
+
     continueToNextChoice:function(){
         this.lay.destroyAllChildren();
         if (!this.myStory.canContinue && this.myStory.currentChoices.length === 0) this.end();
         //this.board.string='';
-        while(this.myStory.canContinue){
-            var tags = this.myStory.currentTags;
-            for(let i=0; i<tags.length; i++) {
-                var tag = tags[i];
-                var splitTag = this.splitPropertyTag(tag);
-                if( splitTag && splitTag.property == "IMAGE" ) {
-                    this.addImage(splitTag.val);
-                }
+        else if(this.myStory.canContinue){
+            let that=this;
+            var continueButton=this.addButton(this.started?'点击继续':'点击开始');
+            if(this.started){
+                var continueAllButton=this.addButton('点击跳过');
+                continueAllButton.on('touchend',function(event){
+                    while(that.myStory.canContinue)that.continueStory(true);
+                    that.continueToNextChoice();
+                });
             }
-            this.addLine(this.myStory.Continue());
+            
+            continueButton.on('touchend',function(event){
+                that.continueStory(false);
+            });
         }
-        if(this.myStory.currentChoices.length > 0){
+        else if(this.myStory.currentChoices.length > 0){
             for (let i = 0; i < this.myStory.currentChoices.length; ++i) {           
                 var choice = this.myStory.currentChoices[i];
                 var button=this.addButton(choice.text);
                 let that=this;
                 button.on('touchend',function(event){                    
                     that.myStory.ChooseChoiceIndex(i);
-                    that.continueToNextChoice();
+                    that.continueStory(false);
                 });                  
             }
         }
