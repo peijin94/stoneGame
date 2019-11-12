@@ -5,7 +5,7 @@
 
 ### 粒子反转
 
-<img src="https://raw.githubusercontent.com/Pjer-zhang/stoneGame/master/Art" width=100 height=100>
+<img src="https://github.com/Pjer-zhang/stoneGame/blob/master/Arts/Logo.PNG" width=100 height=100>
 
 
 带电粒子在磁场中会沿圆轨道旋转，旋转的方向和带电正负相关。所以带电性质不直接决定运动方向但是决定了加速方向，带电性改变，加速方向也会改变。
