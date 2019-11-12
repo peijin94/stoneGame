@@ -142,7 +142,7 @@ cc.Class({
         //this.drawing.strokeColor = cc.Color.RED;
         //this.drawing.stroke();
         if (this.runcount %10 ==0){
-            this.drawing.circle (this.gold.x, this.gold.y, 0.1);
+            this.drawing.circle (this.gold.x, this.gold.y, 0.06);
             this.drawing.strokeColor = cc.Color.WHITE;
             this.drawing.stroke()    
         }
