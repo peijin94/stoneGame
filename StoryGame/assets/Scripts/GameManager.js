@@ -65,7 +65,7 @@ cc.Class({
         // });
         //网络加载json的解决方案
         var xhr =new XMLHttpRequest();
-        xhr.open("GET", 'http://116.62.192.221/'+storyname+'.json', true);
+        xhr.open("GET", 'https://696e-inky-stone-onbz5-1300589323.tcb.qcloud.la/storyContent/'+storyname+'.json', true);
         xhr.onerror=()=>this.board.string='请检查你的网络连接';
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && (xhr.status >= 200 && xhr.status < 400)) {
