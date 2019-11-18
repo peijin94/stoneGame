@@ -2,6 +2,7 @@
   "android-instant": {
     "REMOTE_SERVER_ROOT": "",
     "host": "",
+    "packageName": "org.cocos2d.Inky",
     "pathPattern": "",
     "recordPath": "",
     "scheme": "https",
@@ -46,5 +47,15 @@
     "subContext": ""
   },
   "xxteaKey": "b208e25b-522d-4a",
-  "zipCompressJs": true
+  "zipCompressJs": true,
+  "android": {
+    "packageName": "org.cocos2d.Inky"
+  },
+  "ios": {
+    "packageName": "org.cocos2d.Inky"
+  },
+  "mac": {
+    "packageName": "org.cocos2d.Inky"
+  },
+  "win32": {}
 }
