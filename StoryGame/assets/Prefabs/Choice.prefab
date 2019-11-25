@@ -44,7 +44,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 680,
-      "height": 168
+      "height": 100
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -115,7 +115,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 680,
-      "height": 168
+      "height": 100
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -179,7 +179,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 640,
-      "height": 60
+      "height": 45
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -231,8 +231,8 @@
     "_useOriginalSize": false,
     "_string": "前往东校区",
     "_N$string": "前往东校区",
-    "_fontSize": 40,
-    "_lineHeight": 60,
+    "_fontSize": 30,
+    "_lineHeight": 45,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,

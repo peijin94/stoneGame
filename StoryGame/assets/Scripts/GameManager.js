@@ -44,6 +44,10 @@ cc.Class({
     start(){
         var inkjs=require('inkjs');
         this.story=inkjs.Story;
+        if(!window.playerName);
+        else this.playerName=window.playerName;
+        if(!window.storyName);
+        else this.storyName=window.storyName;
         this.loadStory(this.storyName,this.playerName);
     },
 
@@ -87,6 +91,9 @@ cc.Class({
             cc.director.loadScene("GamePlay");
         });
         var backButton=this.addButton('返回菜单？');
+        backButton.on('touchend',function(event){
+            cc.director.loadScene("Menu");
+        });
     },
 
     continueStory:function(cycle){
@@ -160,6 +167,21 @@ cc.Class({
             image.getComponent(cc.Sprite).spriteFrame=new cc.SpriteFrame(texture);
             image.parent=that.out;
         });
+    },
+
+    addImage64:function(str){
+        let that=this;
+        let image=cc.instantiate(this.imageFrame);
+        let img=new Image();
+        img.src="data:image/png;base64,"+str;
+        img.onload=function(){
+            let texture=new cc.Texture2D();
+            texture.setMipmap(false);
+            texture.initWithElement(img);
+            image.getComponent(cc.Sprite).spriteFrame=new cc.spriteFrame(texture);
+            image.parent=that.out;
+        };
+        
     },
 
     // addInput:function(defaultText,placehoder){
