@@ -1067,8 +1067,9 @@
     "imageFrame": {
       "__uuid__": "5d4a0484-599e-4feb-ba2c-35a741be7dd3"
     },
-    "storyName": "SchoolGame",
-    "playerName": "喵喵",
+    "storyName": "",
+    "playerName": "",
+    "started": false,
     "_id": "0e4JXcmndOiIvLCpz8WPBy"
   }
 ]

@@ -44,10 +44,8 @@ cc.Class({
     start(){
         var inkjs=require('inkjs');
         this.story=inkjs.Story;
-        if(!window.playerName);
-        else this.playerName=window.playerName;
-        if(!window.storyName);
-        else this.storyName=window.storyName;
+        this.playerName=Player_Name;
+        this.storyName=Story_Name;
         this.loadStory(this.storyName,this.playerName);
     },
 
@@ -67,20 +65,43 @@ cc.Class({
         //     cc.log('success');
         //     that.continueToNextChoice();
         // });
+        //微信云开发存储空间加载json的解决方案
+        if(cc.sys.platform===cc.sys.WECHAT_GAME){
+            wx.cloud.init(
+                {
+                    env: 'inky-stone-onbz5'
+                }
+            );
+            wx.cloud.downloadFile({
+                fileID: WeChat_Cloud_Path+that.storyName+'.json', // 文件 ID
+                success: res => {
+                  // 返回临时文件路径
+                  console.log(res.tempFilePath);
+                  let tmpPath=res.tempFilePath;
+                  wx.getFileSystemManager().readFile({
+                        filePath:tmpPath,
+                        encoding:'utf8',
+                        success:(response)=>{
+                            let responseText=response.data;
+                            console.log(responseText);
+                            let responseJson=JSON.parse(responseText);
+                            console.log(responseJson);
+                            that.myStory=new that.story(responseJson);
+                            if(that.myStory.variablesState.$("player_name")!=null)that.myStory.variablesState.$("player_name",playername);
+                            console.log('success');
+                            that.continueToNextChoice();
+                        }
+                    });
+                },
+                fail:()=>{
+                    that.XHRload(storyname);
+                }
+              });
+        }
         //网络加载json的解决方案
-        var xhr =cc.loader.getXMLHttpRequest();
-        xhr.open("GET", 'https://drstone.ustc.edu.cn/api/'+storyname+'.json', true);
-        xhr.onerror=()=>{console.log('请检查你的网络连接');}
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && (xhr.status >= 200 && xhr.status < 400)) {
-                let responseJson=JSON.parse(xhr.responseText);
-                that.myStory=new that.story(responseJson);
-                if(that.myStory.variablesState.$("player_name")!=null)that.myStory.variablesState.$("player_name",playername);
-                cc.log('success');
-                that.continueToNextChoice();
-            }
-        };
-        xhr.send();       
+        else{
+            this.XHRload(storyname);
+        }       
     },
 
     // update (dt) {},
@@ -180,8 +201,7 @@ cc.Class({
             texture.initWithElement(img);
             image.getComponent(cc.Sprite).spriteFrame=new cc.spriteFrame(texture);
             image.parent=that.out;
-        };
-        
+        };        
     },
 
     // addInput:function(defaultText,placehoder){
@@ -199,6 +219,22 @@ cc.Class({
             };
         }
         return null;
+    },
+
+    XHRload:function(storyname){
+        var xhr =cc.loader.getXMLHttpRequest();
+        xhr.open("GET", Server_Name + storyname +'.json', true);//Server_Name请在Global.js中配置
+        xhr.onerror=()=>{console.log('请检查你的网络连接');}
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && (xhr.status >= 200 && xhr.status < 400)) {
+                let responseJson=JSON.parse(xhr.responseText);
+                that.myStory=new that.story(responseJson);
+                if(that.myStory.variablesState.$("player_name")!=null)that.myStory.variablesState.$("player_name",playername);
+                cc.log('success');
+                that.continueToNextChoice();
+            }
+        };
+        xhr.send();
     }
 
 });
