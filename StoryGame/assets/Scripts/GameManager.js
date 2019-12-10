@@ -37,18 +37,22 @@ cc.Class({
         playerName:'喵喵',
         story:undefined,
         myStory:undefined,
-        started:false
+        started:false,
+        downloaded:false,
+        tmpPath:'',
     },
     // LIFE-CYCLE CALLBACKS:
 
-    start(){
+    onLoad(){
         var inkjs=require('inkjs');
         this.story=inkjs.Story;
+    },
+
+    onEnable(){        
         this.playerName=Player_Name;
         this.storyName=Story_Name;
         this.loadStory(this.storyName,this.playerName);
     },
-
 
     loadStory:function (storyname,playername) {
         this.lay.destroyAllChildren();
@@ -72,53 +76,62 @@ cc.Class({
                     env: 'inky-stone-onbz5'
                 }
             );
-            wx.cloud.downloadFile({
-                fileID: WeChat_Cloud_Path+that.storyName+'.json', // 文件 ID
-                success: res => {
-                  // 返回临时文件路径
-                  console.log(res.tempFilePath);
-                  let tmpPath=res.tempFilePath;
-                  wx.getFileSystemManager().readFile({
-                        filePath:tmpPath,
-                        encoding:'utf8',
-                        success:(response)=>{
-                            let responseText=response.data;
-                            console.log(responseText);
-                            let responseJson=JSON.parse(responseText);
-                            console.log(responseJson);
-                            that.myStory=new that.story(responseJson);
-                            if(that.myStory.variablesState.$("player_name")!=null)that.myStory.variablesState.$("player_name",playername);
-                            console.log('success');
-                            that.continueToNextChoice();
-                        }
-                    });
-                },
-                fail:()=>{
-                    that.XHRload(storyname);
-                }
-              });
+            if(this.downloaded===false){
+                wx.cloud.downloadFile({
+                    fileID: WeChat_Cloud_Path+storyname+'.json', // 文件 ID
+                    success: res => {
+                      // 返回临时文件路径
+                      console.log(res.tempFilePath);
+                      let tmpPath=res.tempFilePath;
+                      this.tmpPath=tmpPath;
+                      this.loadTemp(storyname,playername);
+                    },
+                    fail:()=>{
+                        that.XHRload(storyname,playername);
+                    }
+                });
+            }
+            else{
+                that.loadTemp(storyname,playername);
+            }
         }
         //网络加载json的解决方案
         else{
-            this.XHRload(storyname);
+            this.XHRload(storyname,playername);
         }       
     },
 
     // update (dt) {},
     end:function(){
-        this.addLine('故事结束');
+        let end=this.addLine('---The End---');
+        let str=end.getComponent(cc.Label);
+        str.fontSize*=2;
+        str.lineHeight=str.fontSize;
+        let that=this;
         var restartButton=this.addButton('重新开始？');
+        let color=new cc.Color();
+        color.fromHEX("#09BB07");
+        restartButton.children[0].color=color;
         restartButton.on('touchend',function(event){
-            cc.director.loadScene("GamePlay");
+            that.myStory=null;
+            that.started=false;
+            that.loadStory(that.storyName,that.playerName);
         });
         var backButton=this.addButton('返回菜单？');
+        color.fromHEX("#E64340");
+        backButton.children[0].color=color;
         backButton.on('touchend',function(event){
-            cc.director.loadScene("Menu");
+            cc.director.loadScene("Menu");                      
         });
+        color.fromHEX("#FFFFFF");
+        restartButton.children[0].children[0].color=color;
+        backButton.children[0].children[0].color=color;
     },
 
     continueStory:function(cycle){
-        if(!this.started)this.started=true;
+        if(!this.started){
+            this.started=true;
+        }
         var tags = this.myStory.currentTags;
         for(let i=0; i<tags.length; i++) {
             var tag = tags[i];
@@ -172,6 +185,7 @@ cc.Class({
         newLine.getComponent(cc.Label).string=string;
         newLine.parent=this.out;
         this.scrollView.scrollToBottom(1.0);
+        return newLine;
     },
 
     addButton:function(text){
@@ -221,7 +235,7 @@ cc.Class({
         return null;
     },
 
-    XHRload:function(storyname){
+    XHRload:function(storyname,playername){
         var xhr =cc.loader.getXMLHttpRequest();
         xhr.open("GET", Server_Name + storyname +'.json', true);//Server_Name请在Global.js中配置
         xhr.onerror=()=>{console.log('请检查你的网络连接');}
@@ -235,6 +249,29 @@ cc.Class({
             }
         };
         xhr.send();
+    },
+
+    loadTemp:function(storyname,playername){
+        let that=this;
+        wx.getFileSystemManager().readFile({
+            filePath:that.tmpPath,
+            encoding:'utf8',
+            success:(response)=>{
+                let responseText=response.data;
+                let mew=responseText.indexOf('{');
+                responseText=responseText.substr(mew,responseText.length-mew);
+                let responseJson=JSON.parse(responseText);
+                that.myStory=new that.story(responseJson);
+                if(that.myStory.variablesState.$("player_name")!=null)that.myStory.variablesState.$("player_name",playername);
+                console.log('success');
+                that.downloaded=true;
+                that.continueToNextChoice();
+            },
+            fail:()=>{
+                that.downloaded=false;
+                that.loadStory(storyname,playername);
+            }
+        });
     }
 
 });

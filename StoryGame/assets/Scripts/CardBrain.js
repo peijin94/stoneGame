@@ -41,7 +41,7 @@ cc.Class({
     // onLoad () {},
 
 
-    start () {
+    onLoad () {
         let that=this;
         wx.cloud.init(
             {

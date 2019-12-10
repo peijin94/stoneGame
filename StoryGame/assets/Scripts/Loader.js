@@ -35,7 +35,7 @@ cc.Class({
 
     // onLoad () {},
 
-    start () {
+    onLoad () {
         let that=this;
         wx.cloud.init(
             {
@@ -54,7 +54,8 @@ cc.Class({
 
     addCard:function(name){
         let card=cc.instantiate(this.card);
-        card.getComponent("CardBrain").StoryName=name;
+        let brain= card.getComponent("CardBrain");
+        brain.StoryName=name;
         card.parent=this.board;
     }
 
