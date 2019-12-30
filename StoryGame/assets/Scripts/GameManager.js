@@ -40,6 +40,7 @@ cc.Class({
         started:false,
         downloaded:false,
         tmpPath:'',
+        bar:cc.Node,
     },
     // LIFE-CYCLE CALLBACKS:
 
@@ -77,7 +78,8 @@ cc.Class({
                 }
             );
             if(this.downloaded===false){
-                wx.cloud.downloadFile({
+                this.bar.active=true;
+                const downloadTask=wx.cloud.downloadFile({
                     fileID: WeChat_Cloud_Path+storyname+'.json', // 文件 ID
                     success: res => {
                       // 返回临时文件路径
@@ -89,6 +91,12 @@ cc.Class({
                     fail:()=>{
                         that.XHRload(storyname,playername);
                     }
+                });
+
+                downloadTask.onProgressUpdate((res)=>{
+                    console.log(res.progress);
+                    this.bar.getComponent(cc.ProgressBar).progress=res.progress/100;
+                    if(res.progress===100)this.bar.active=false;
                 });
             }
             else{
@@ -108,7 +116,7 @@ cc.Class({
         str.fontSize*=2;
         str.lineHeight=str.fontSize;
         let that=this;
-        var restartButton=this.addButton('重新开始？');
+        var restartButton=this.addButton('重新开始');
         let color=new cc.Color();
         color.fromHEX("#09BB07");
         restartButton.children[0].color=color;
@@ -117,7 +125,7 @@ cc.Class({
             that.started=false;
             that.loadStory(that.storyName,that.playerName);
         });
-        var backButton=this.addButton('返回菜单？');
+        var backButton=this.addButton('返回菜单');
         color.fromHEX("#E64340");
         backButton.children[0].color=color;
         backButton.on('touchend',function(event){
