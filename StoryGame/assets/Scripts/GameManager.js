@@ -40,7 +40,7 @@ cc.Class({
         started:false,
         downloaded:false,
         tmpPath:'',
-        bar:cc.Node,
+        // bar:cc.Node,
     },
     // LIFE-CYCLE CALLBACKS:
 
@@ -78,8 +78,11 @@ cc.Class({
                 }
             );
             if(this.downloaded===false){
-                this.bar.active=true;
-                const downloadTask=wx.cloud.downloadFile({
+                // this.bar.active=true;
+                wx.showLoading({
+                    title:"加载中......"
+                });
+                wx.cloud.downloadFile({
                     fileID: WeChat_Cloud_Path+storyname+'.json', // 文件 ID
                     success: res => {
                       // 返回临时文件路径
@@ -90,13 +93,10 @@ cc.Class({
                     },
                     fail:()=>{
                         that.XHRload(storyname,playername);
+                    },
+                    complete:()=>{
+                        wx.hideLoading();
                     }
-                });
-
-                downloadTask.onProgressUpdate((res)=>{
-                    console.log(res.progress);
-                    this.bar.getComponent(cc.ProgressBar).progress=res.progress/100;
-                    if(res.progress===100)this.bar.active=false;
                 });
             }
             else{

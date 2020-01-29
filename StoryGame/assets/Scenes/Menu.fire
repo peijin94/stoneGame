@@ -174,7 +174,7 @@
       "array": [
         0,
         0,
-        659.0453491210938,
+        659.0453322799578,
         0,
         0,
         0,
@@ -230,6 +230,7 @@
       "height": 1
     },
     "_renderStages": 1,
+    "_alignWithScreen": true,
     "_id": "49cnhjXvJM/Yu0dlCI+tG+"
   },
   {
@@ -898,8 +899,8 @@
     "board": {
       "__id__": 10
     },
-    "body": {
-      "__id__": 8
+    "pageView": {
+      "__id__": 15
     },
     "_id": "d0A+FjkBJOvJ8VfeYwxUa6"
   }

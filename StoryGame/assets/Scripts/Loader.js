@@ -29,6 +29,7 @@ cc.Class({
         // },
         card:cc.Prefab,
         board:cc.Node,
+        pageView:cc.PageView,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -53,10 +54,10 @@ cc.Class({
     },
 
     addCard:function(name){
-        let card=cc.instantiate(this.card);
+        let card=cc.instantiate(this.card);         
         let brain= card.getComponent("CardBrain");
         brain.StoryName=name;
-        card.parent=this.board;
+        this.pageView.addPage(card);    
     }
 
     // update (dt) {},
