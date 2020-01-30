@@ -43,8 +43,7 @@ cc.Class({
                 env: 'inky-stone-onbz5'
             }
         );
-        let db=wx.cloud.database();
-        db.collection(Story_Data).doc("5475f359-660b-40d5-b363-427cf78717e5").get({
+        wx.cloud.database().collection(Story_Data).doc("5475f359-660b-40d5-b363-427cf78717e5").get({
             success:res=>{
                 for(let i=0;i<res.data.StoryNames.length;i++){
                     that.addCard(res.data.StoryNames[i]);
