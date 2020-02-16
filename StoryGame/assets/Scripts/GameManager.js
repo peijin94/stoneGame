@@ -72,36 +72,33 @@ cc.Class({
         // });
         //微信云开发存储空间加载json的解决方案
         if(cc.sys.platform===cc.sys.WECHAT_GAME){
-            wx.cloud.init(
-                {
-                    env: 'inky-stone-onbz5'
+            wx.getStorage({
+                key:storyname,
+                success:res=>{
+                    this.loadStorage(res.data,playername);
+                },
+                fail:()=>{
+                    wx.showLoading({
+                        title:"加载中......"
+                    });
+                    wx.cloud.downloadFile({
+                        fileID: WeChat_Cloud_Path+storyname+'.json', // 文件 ID
+                        success: res => {
+                          // 返回临时文件路径
+                          console.log(res.tempFilePath);
+                          let tmpPath=res.tempFilePath;
+                          this.tmpPath=tmpPath;
+                          this.loadTemp(storyname,playername);
+                        },
+                        fail:()=>{
+                            that.XHRload(storyname,playername);
+                        },
+                        complete:()=>{
+                            wx.hideLoading();
+                        }
+                    });
                 }
-            );
-            if(this.downloaded===false){
-                // this.bar.active=true;
-                wx.showLoading({
-                    title:"加载中......"
-                });
-                wx.cloud.downloadFile({
-                    fileID: WeChat_Cloud_Path+storyname+'.json', // 文件 ID
-                    success: res => {
-                      // 返回临时文件路径
-                      console.log(res.tempFilePath);
-                      let tmpPath=res.tempFilePath;
-                      this.tmpPath=tmpPath;
-                      this.loadTemp(storyname,playername);
-                    },
-                    fail:()=>{
-                        that.XHRload(storyname,playername);
-                    },
-                    complete:()=>{
-                        wx.hideLoading();
-                    }
-                });
-            }
-            else{
-                that.loadTemp(storyname,playername);
-            }
+            });
         }
         //网络加载json的解决方案
         else{
@@ -269,17 +266,22 @@ cc.Class({
                 let mew=responseText.indexOf('{');
                 responseText=responseText.substr(mew,responseText.length-mew);
                 let responseJson=JSON.parse(responseText);
-                that.myStory=new that.story(responseJson);
-                if(that.myStory.variablesState.$("player_name")!=null)that.myStory.variablesState.$("player_name",playername);
-                console.log('success');
-                that.downloaded=true;
-                that.continueToNextChoice();
+                wx.setStorage({
+                    key:storyname,
+                    data:responseJson,
+                });
+                that.loadStorage(responseJson,playername);
             },
             fail:()=>{
-                that.downloaded=false;
                 that.loadStory(storyname,playername);
             }
         });
+    },
+
+    loadStorage:function(obj,playername){
+        this.myStory=new this.story(obj);
+        if(this.myStory.variablesState.$("player_name")!=null)this.myStory.variablesState.$("player_name",playername);
+        this.continueToNextChoice();
     }
 
 });
