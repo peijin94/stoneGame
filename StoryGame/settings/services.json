@@ -97,7 +97,32 @@
 		}
 	],
 	"game": {
-		"name": "未知游戏",
-		"appid": "UNKNOW"
-	}
+		"name": "INKY-STONE",
+		"appid": "605879310",
+		"cid": "0"
+	},
+	"configs": [
+		{
+			"appid": "605879310",
+			"services": [
+				{
+					"service_id": "272",
+					"enable": false
+				},
+				{
+					"service_id": "269",
+					"enable": false
+				},
+				{
+					"service_id": "235",
+					"enable": false
+				},
+				{
+					"service_id": "241",
+					"enable": false
+				}
+			]
+		}
+	],
+	"needExecNative": true
 }

@@ -1,32 +1,7 @@
-// Learn cc.Class:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/class.html
-//  - [English] http://docs.cocos2d-x.org/creator/manual/en/scripting/class.html
-// Learn Attribute:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://docs.cocos2d-x.org/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] https://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
-
 cc.Class({
     extends: cc.Component,
 
     properties: {
-        // foo: {
-        //     // ATTRIBUTES:
-        //     default: null,        // The default value will be used only when the component attaching
-        //                           // to a node for the first time
-        //     type: cc.SpriteFrame, // optional, default is typeof default
-        //     serializable: true,   // optional, default is true
-        // },
-        // bar: {
-        //     get () {
-        //         return this._bar;
-        //     },
-        //     set (value) {
-        //         this._bar = value;
-        //     }
-        // },
         lay:cc.Node,
         out:cc.Node,
         scrollView:cc.ScrollView,
@@ -108,7 +83,7 @@ cc.Class({
 
     // update (dt) {},
     end:function(){
-        let end=this.addLine('---The End---');
+        let end=this.addLine('---The End---',false);
         let str=end.getComponent(cc.Label);
         str.fontSize*=2;
         str.lineHeight=str.fontSize;
@@ -148,7 +123,7 @@ cc.Class({
                 this.addImage64(splitTag.val);
             }
         }
-        this.addLine(this.myStory.Continue());
+        this.currentLine=this.addLine(this.myStory.Continue(),cycle);
         if(!cycle)this.continueToNextChoice();
     },
 
@@ -185,12 +160,28 @@ cc.Class({
         else this.end();
     },
 
-    addLine:function(string){
+    addLine:function(string,notTyper){
         let newLine=cc.instantiate(this.board);
-        newLine.getComponent(cc.Label).string=string;
+        let Lb= newLine.getComponent(cc.Label);
         newLine.parent=this.out;
         this.scrollView.scrollToBottom(1.0);
-        return newLine;
+        if(!notTyper){
+            let charIdx=0;
+            let charArr=string.split('');
+            let typerTimer=setInterval(()=>{
+                if(charIdx>=charArr.length){
+                    typerTimer&& clearInterval(typerTimer)
+                    
+                }
+                else{
+                    charIdx+=1;
+                    Lb.string=charArr.slice(0,charIdx).join('');
+                }
+                this.scrollView.scrollToBottom(1.0);
+            },50)
+        }
+        else {Lb.string=string;this.scrollView.scrollToBottom(1.0);}
+        return Lb;
     },
 
     addButton:function(text){
@@ -215,7 +206,7 @@ cc.Class({
         let img=new Image();
         img.src="data:image/png;base64,"+str;
         img.onload=function(){
-            let texture=new cc.Texture2D();
+            let texture=new cc.Texture();
             texture.setMipmap(false);
             texture.initWithElement(img);
             image.getComponent(cc.Sprite).spriteFrame=new cc.spriteFrame(texture);
@@ -280,7 +271,7 @@ cc.Class({
 
     loadStorage:function(obj,playername){
         this.myStory=new this.story(obj);
-        if(this.myStory.variablesState.$("player_name")!=null)this.myStory.variablesState.$("player_name",playername);
+        if(!!this.myStory.variablesState.$("player_name"))this.myStory.variablesState.$("player_name",playername);
         this.continueToNextChoice();
     }
 
