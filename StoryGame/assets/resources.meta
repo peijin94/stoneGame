@@ -1,6 +1,7 @@
 {
-  "ver": "1.1.2",
+  "ver": "1.1.3",
   "uuid": "c10daad1-5a78-4a37-b902-d12b523219ea",
+  "importer": "folder",
   "isBundle": true,
   "bundleName": "resources",
   "priority": 8,

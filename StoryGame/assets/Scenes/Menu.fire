@@ -174,7 +174,7 @@
       "array": [
         0,
         0,
-        676.3658403556466,
+        1108.5125168440816,
         0,
         0,
         0,
@@ -681,7 +681,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
-    "_useOriginalSize": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_string": "石头互动故事",
     "_N$string": "石头互动故事",
     "_fontSize": 80,
