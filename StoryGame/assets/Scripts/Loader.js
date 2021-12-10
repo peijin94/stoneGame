@@ -38,18 +38,29 @@ cc.Class({
 
     onLoad () {
         let that=this;
-        wx.cloud.init(
-            {
-                env: 'inky-stone-onbz5'
-            }
-        );
-        wx.cloud.database().collection(Story_Data).doc("5475f359-660b-40d5-b363-427cf78717e5").get({
-            success:res=>{
-                for(let i=0;i<res.data.StoryNames.length;i++){
-                    that.addCard(res.data.StoryNames[i]);
+        if(cc.sys.platform===cc.sys.WECHAT_GAME){
+            wx.cloud.init(
+                {
+                    env: 'inky-stone-onbz5'
                 }
-            }
-        });
+            );
+            wx.cloud.database().collection(Story_Data).doc("5475f359-660b-40d5-b363-427cf78717e5").get({
+                success:res=>{
+                    for(let i=0;i<res.data.StoryNames.length;i++){
+                        that.addCard(res.data.StoryNames[i]);
+                    }
+                }
+            });
+        }
+        else{
+            let infos=[];
+            cc.resources.getDirWithPath('',cc.JsonAsset,infos);
+            console.log(infos);
+            infos.forEach(info => {
+                that.addCard(info.path);
+            });
+        }
+
     },
 
     addCard:function(name){

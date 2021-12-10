@@ -631,7 +631,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 480,
+      "width": 378.01,
       "height": 100.8
     },
     "_anchorPoint": {
@@ -683,8 +683,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "石头互动故事",
-    "_N$string": "石头互动故事",
+    "_string": "Inky Stone",
+    "_N$string": "Inky Stone",
     "_fontSize": 80,
     "_lineHeight": 80,
     "_enableWrapText": true,

@@ -305,9 +305,10 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
-    "_useOriginalSize": false,
-    "_string": "开始\n故事",
-    "_N$string": "开始\n故事",
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_string": "Start",
+    "_N$string": "Start",
     "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": false,
@@ -315,6 +316,8 @@
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
+    "_styleFlags": 0,
+    "_underlineHeight": 0,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -328,7 +331,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "9a2b5afd-be68-4652-8047-dd4fb1428006"
+      "__id__": 0
     },
     "fileId": "d4DrXaTPxI8Z7uoEsa53YD",
     "sync": false
@@ -398,7 +401,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "9a2b5afd-be68-4652-8047-dd4fb1428006"
+      "__id__": 0
     },
     "fileId": "60AnjL+ApJQLkkG+LrgfCt",
     "sync": false
@@ -491,7 +494,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "9a2b5afd-be68-4652-8047-dd4fb1428006"
+      "__id__": 0
     },
     "fileId": "9fF41D9ThDi4h6v6b8g6wK",
     "sync": false
@@ -573,7 +576,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
-    "_useOriginalSize": false,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_string": "",
     "_N$string": "",
     "_fontSize": 60,
@@ -583,6 +587,8 @@
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
+    "_styleFlags": 0,
+    "_underlineHeight": 0,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -596,7 +602,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "9a2b5afd-be68-4652-8047-dd4fb1428006"
+      "__id__": 0
     },
     "fileId": "02Dibh6ZNK/atPph3otzFD",
     "sync": false
@@ -678,7 +684,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
-    "_useOriginalSize": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_string": "",
     "_N$string": "",
     "_fontSize": 30,
@@ -688,6 +695,8 @@
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
+    "_styleFlags": 0,
+    "_underlineHeight": 0,
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -701,7 +710,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "9a2b5afd-be68-4652-8047-dd4fb1428006"
+      "__id__": 0
     },
     "fileId": "39i3o0LpdG+IL9SljhUzO+",
     "sync": false
@@ -804,7 +813,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 90,
+      "width": 71.7,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -854,9 +863,10 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
-    "_useOriginalSize": false,
-    "_string": "标签：",
-    "_N$string": "标签：",
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_string": "Tags:",
+    "_N$string": "Tags:",
     "_fontSize": 30,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -864,6 +874,8 @@
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
+    "_styleFlags": 0,
+    "_underlineHeight": 0,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -877,7 +889,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "9a2b5afd-be68-4652-8047-dd4fb1428006"
+      "__id__": 0
     },
     "fileId": "2fBvjvwshCSL4dzbOMM/cq",
     "sync": false
@@ -929,7 +941,6 @@
     },
     "_resize": 1,
     "_N$layoutType": 2,
-    "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
       "width": 40,
@@ -953,7 +964,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "9a2b5afd-be68-4652-8047-dd4fb1428006"
+      "__id__": 0
     },
     "fileId": "479NqiLBJJo6xtOecS8jGz",
     "sync": false
@@ -1023,9 +1034,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "9a2b5afd-be68-4652-8047-dd4fb1428006"
+      "__id__": 0
     },
-    "fileId": "ebjI/dRU9IJrYtA1O7edeS",
+    "fileId": "",
     "sync": false
   }
 ]

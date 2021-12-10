@@ -38,7 +38,7 @@
   },
   "startScene": "2d0d602a-6cb9-490e-82d5-14ed385988e1",
   "title": "Inky",
-  "webOrientation": "auto",
+  "webOrientation": "portrait",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",
     "appid": "wxa3467bd61bd3afe4",
@@ -49,13 +49,27 @@
   "xxteaKey": "b208e25b-522d-4a",
   "zipCompressJs": true,
   "android": {
-    "packageName": "org.cocos2d.Inky"
+    "packageName": "org.cocos2d.Inky",
+    "REMOTE_SERVER_ROOT": ""
   },
   "ios": {
-    "packageName": "org.cocos2d.Inky"
+    "packageName": "org.cocos2d.Inky",
+    "REMOTE_SERVER_ROOT": "",
+    "ios_enable_jit": true
   },
   "mac": {
-    "packageName": "org.cocos2d.Inky"
+    "packageName": "org.cocos2d.Inky",
+    "REMOTE_SERVER_ROOT": "",
+    "width": 1280,
+    "height": 720
   },
-  "win32": {}
+  "win32": {
+    "REMOTE_SERVER_ROOT": "",
+    "width": 1280,
+    "height": 720
+  },
+  "mainCompressionType": "default",
+  "mainIsRemote": false,
+  "nativeMd5Cache": true,
+  "agreements": {}
 }

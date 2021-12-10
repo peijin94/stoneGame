@@ -9,7 +9,7 @@ cc.Class({
         board:cc.Prefab,
         imageFrame:cc.Prefab,
         storyName:'intercept',
-        playerName:'喵喵',
+        playerName:'nyanko',
         story:undefined,
         myStory:undefined,
         started:false,
@@ -34,17 +34,6 @@ cc.Class({
         this.lay.destroyAllChildren();
         this.out.destroyAllChildren();
         let that=this;   
-        //本地资源加载json的解决方案   
-        // cc.loader.loadRes(storyname,cc.JsonAsset,function (err,JS){
-        //     if (err) {
-        //         cc.log(err.message || err);
-        //         return;
-        //     }
-        //     that.myStory=new that.story(JS.json);
-        //     if(that.myStory.variablesState.$("player_name")!=null)that.myStory.variablesState.$("player_name",playername);
-        //     cc.log('success');
-        //     that.continueToNextChoice();
-        // });
         //微信云开发存储空间加载json的解决方案
         if(cc.sys.platform===cc.sys.WECHAT_GAME){
             wx.getStorage({
@@ -75,10 +64,18 @@ cc.Class({
                 }
             });
         }
-        //网络加载json的解决方案
         else{
-            this.XHRload(storyname,playername);
-        }       
+            //本地资源加载json的解决方案   
+            cc.resources.load(storyname,cc.JsonAsset,function (err,storyJSON){
+                if (err) {
+                    cc.log(err.message || err);
+                    that.XHRload(storyname,playername);
+                }
+                else{
+                    that.loadStorage(storyJSON.json,playername)
+                }
+            });
+        }      
     },
 
     // update (dt) {},
@@ -88,7 +85,7 @@ cc.Class({
         str.fontSize*=2;
         str.lineHeight=str.fontSize;
         let that=this;
-        var restartButton=this.addButton('重新开始');
+        var restartButton=this.addButton('Restart');
         let color=new cc.Color();
         color.fromHEX("#09BB07");
         restartButton.children[0].color=color;
@@ -97,11 +94,11 @@ cc.Class({
             that.started=false;
             that.loadStory(that.storyName,that.playerName);
         });
-        var backButton=this.addButton('返回菜单');
+        var backButton=this.addButton('Return to Menu');
         color.fromHEX("#E64340");
         backButton.children[0].color=color;
         backButton.on('touchend',function(event){
-            cc.director.loadScene("Menu");                      
+            cc.director.loadScene("Menu");               
         });
         color.fromHEX("#FFFFFF");
         restartButton.children[0].children[0].color=color;
@@ -123,7 +120,13 @@ cc.Class({
                 this.addImage64(splitTag.val);
             }
         }
-        this.currentLine=this.addLine(this.myStory.Continue(),cycle);
+        if(this.myStory.canContinue){
+            let stringToAdd=this.myStory.Continue();
+            console.log(stringToAdd,typeof(stringToAdd),stringToAdd.length);
+            if(!stringToAdd.match(/^\s*$/))this.currentLine=this.addLine(stringToAdd,cycle);
+            else this.continueStory(cycle);
+        }
+        
         if(!cycle)this.continueToNextChoice();
     },
 
@@ -133,9 +136,9 @@ cc.Class({
         //this.board.string='';
         else if(this.myStory.canContinue){
             let that=this;
-            var continueButton=this.addButton(this.started?'点击继续':'点击开始');
+            var continueButton=this.addButton(this.started?'Continue':'Start');
             if(this.started){
-                var continueAllButton=this.addButton('点击跳过');
+                var continueAllButton=this.addButton('Skip');
                 continueAllButton.on('touchend',function(event){
                     while(that.myStory.canContinue)that.continueStory(true);
                     that.continueToNextChoice();
@@ -234,7 +237,7 @@ cc.Class({
     XHRload:function(storyname,playername){
         var xhr =cc.loader.getXMLHttpRequest();
         xhr.open("GET", Server_Name + storyname +'.json', true);//Server_Name请在Global.js中配置
-        xhr.onerror=()=>{console.log('请检查你的网络连接');}
+        xhr.onerror=()=>{console.log('Please Check your Internet connection');}
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && (xhr.status >= 200 && xhr.status < 400)) {
                 let responseJson=JSON.parse(xhr.responseText);
@@ -274,5 +277,4 @@ cc.Class({
         if(!!this.myStory.variablesState.$("player_name"))this.myStory.variablesState.$("player_name",playername);
         this.continueToNextChoice();
     }
-
 });

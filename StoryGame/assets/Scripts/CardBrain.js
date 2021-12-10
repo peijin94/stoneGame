@@ -18,27 +18,33 @@ cc.Class({
 
     onLoad () {
         let that=this;
-        wx.cloud.init(
-            {
-                env: 'inky-stone-onbz5'
-            }
-        );
-        let db=wx.cloud.database();
-        db.collection(Story_List).where({
-            fileName:that.StoryName
-        })
-        .get({success:res=>
-            {
-                console.log(res.data);
-                that.colorCycle();
-                that.setButton();
-                that.setLabel(res.data[0].title,res.data[0].description);
-                that.setTags(res.data[0].tags);
-                //that.setImage64(res.data[0].titleImage);
-
-            }
-        })
-
+        if(cc.sys.platform===cc.sys.WECHAT_GAME){
+            wx.cloud.init(
+                {
+                    env: 'inky-stone-onbz5'
+                }
+            );
+            let db=wx.cloud.database();
+            db.collection(Story_List).where({
+                fileName:that.StoryName
+            })
+            .get({success:res=>
+                {
+                    console.log(res.data);
+                    that.colorCycle();
+                    that.setButton();
+                    that.setLabel(res.data[0].title,res.data[0].description);
+                    that.setTags(res.data[0].tags);
+                    //that.setImage64(res.data[0].titleImage);
+    
+                }
+            })
+        }
+        else{
+            that.colorCycle();
+            that.setButton();
+            that.setTitle(that.StoryName)
+        }
 
     },
 
@@ -61,8 +67,12 @@ cc.Class({
     },
 
     setLabel:function(title,description){
-        this.TitleLabel.string=title;
+        this.setTitle(title);
         this.DescriptionLabel.string=description;
+    },
+
+    setTitle:function(title){
+        this.TitleLabel.string=title;
     },
 
     setTags:function(array){
